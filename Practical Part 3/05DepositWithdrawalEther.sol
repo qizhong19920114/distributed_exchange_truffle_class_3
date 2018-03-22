@@ -1,14 +1,14 @@
 pragma solidity ^0.4.13;
 
 
-import .owned.sol;
-import .FixedSupplyToken.sol;
+import "./owned.sol";
+import "./FixedSupplyToken.sol";
 
 
 contract Exchange is owned {
 
     
-     GENERAL STRUCTURE 
+    //  GENERAL STRUCTURE 
     
     struct Offer {
         
@@ -21,7 +21,7 @@ contract Exchange is owned {
         uint higherPrice;
         uint lowerPrice;
         
-        mapping (uint = Offer) offers;
+        mapping (uint => Offer) offers;
         
         uint offers_key;
         uint offers_length;
@@ -34,14 +34,14 @@ contract Exchange is owned {
         string symbolName;
         
         
-        mapping (uint = OrderBook) buyBook;
+        mapping (uint => OrderBook) buyBook;
         
         uint curBuyPrice;
         uint lowestBuyPrice;
         uint amountBuyPrices;
 
 
-        mapping (uint = OrderBook) sellBook;
+        mapping (uint => OrderBook) sellBook;
         uint curSellPrice;
         uint highestSellPrice;
         uint amountSellPrices;
@@ -49,30 +49,30 @@ contract Exchange is owned {
     }
 
 
-    we support a max of 255 tokens...
-    mapping (uint8 = Token) tokens;
+    // we support a max of 255 tokens...
+    mapping (uint8 => Token) tokens;
     uint8 symbolNameIndex;
 
 
     
-     BALANCES 
+    //  BALANCES 
     
-    mapping (address = mapping (uint8 = uint)) tokenBalanceForAddress;
+    mapping (address => mapping (uint8 => uint)) tokenBalanceForAddress;
 
-    mapping (address = uint) balanceEthForAddress;
-
-
-
-
-    
-     EVENTS 
-    
+    mapping (address => uint) balanceEthForAddress;
 
 
 
 
     
-     DEPOSIT AND WITHDRAWAL ETHER 
+    //  EVENTS 
+    
+
+
+
+
+    
+    //  DEPOSIT AND WITHDRAWAL ETHER 
     
     function depositEther() payable {
         require(balanceEthForAddress[msg.sender] + msg.value >= balanceEthForAddress[msg.sender]);
@@ -92,7 +92,7 @@ contract Exchange is owned {
 
 
     
-     TOKEN MANAGEMENT 
+    //  TOKEN MANAGEMENT 
     
 
     function addToken(string symbolName, address erc20TokenAddress) onlyowner {
@@ -112,7 +112,7 @@ contract Exchange is owned {
 
 
      function getSymbolIndex(string symbolName) internal returns (uint8) {
-        for (uint8 i = 1; i = symbolNameIndex; i++) {
+        for (uint8 i = 1; i <= symbolNameIndex; i++) {
             if (stringsEqual(tokens[i].symbolName, symbolName)) {
                 return i;
             }
@@ -124,15 +124,15 @@ contract Exchange is owned {
 
 
     
-     STRING COMPARISON FUNCTION 
+    //  STRING COMPARISON FUNCTION 
     
     function stringsEqual(string storage _a, string memory _b) internal returns (bool) {
         bytes storage a = bytes(_a);
         bytes memory b = bytes(_b);
         if (a.length != b.length)
             return false;
-         @todo unroll this loop
-        for (uint i = 0; i  a.length; i ++)
+        //  @todo unroll this loop
+        for (uint i = 0; i< a.length; i ++)
             if (a[i] != b[i])
                 return false;
         return true;
@@ -140,7 +140,7 @@ contract Exchange is owned {
 
 
     
-     DEPOSIT AND WITHDRAWAL TOKEN 
+    //  DEPOSIT AND WITHDRAWAL TOKEN 
     
     function depositToken(string symbolName, uint amount) {
     }
@@ -156,14 +156,14 @@ contract Exchange is owned {
 
 
     
-     ORDER BOOK - BID ORDERS 
+    //  ORDER BOOK - BID ORDERS 
     
     function getBuyOrderBook(string symbolName) constant returns (uint[], uint[]) {
     }
 
 
     
-     ORDER BOOK - ASK ORDERS 
+    //  ORDER BOOK - ASK ORDERS 
     
     function getSellOrderBook(string symbolName) constant returns (uint[], uint[]) {
     }
@@ -171,7 +171,7 @@ contract Exchange is owned {
 
 
     
-     NEW ORDER - BID ORDER 
+    //  NEW ORDER - BID ORDER 
     
     function buyToken(string symbolName, uint priceInWei, uint amount) {
     }
@@ -181,7 +181,7 @@ contract Exchange is owned {
 
 
     
-     NEW ORDER - ASK ORDER 
+    //  NEW ORDER - ASK ORDER 
     
     function sellToken(string symbolName, uint priceInWei, uint amount) {
     }
@@ -189,7 +189,7 @@ contract Exchange is owned {
 
 
     
-     CANCEL LIMIT ORDER LOGIC 
+    //  CANCEL LIMIT ORDER LOGIC 
     
     function cancelOrder(string symbolName, bool isSellOrder, uint priceInWei, uint offerKey) {
     }
